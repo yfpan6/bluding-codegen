@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<table class="table">
+  <caption>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+      创建
+    </button>
+    <hr/>
+  </caption>
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th width="200">操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="dataModel, iterStat:${dataModelList}">
+    <td th:text="${dataModel.id}"></td>
+    <td th:text="${dataModel.name}"></td>
+    <td>
+      <a class="btn btn-primary" data-toggle="modal"
+         th:attr="data-model-id='' + ${dataModel.id}"
+         data-target="#myModal">
+        修改
+      </a>
+      <a class="btn btn-danger" data-toggle="modal"
+         th:onclick="'deleteDataModel(' + ${dataModel.id} + ')'">
+        删除
+      </a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

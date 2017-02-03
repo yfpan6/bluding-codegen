@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<input type="hidden" id="data_model_id" th:value="${dataModel.id}"/>
+<form class="form-horizontal" role="form">
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="name" placeholder="this name of the porter"
+             th:value="${dataModel.name}"/>
+    </div>
+  </div>
+</form>
+</body>
+</html>
