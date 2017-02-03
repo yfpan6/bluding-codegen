@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.112-ea">
+  <tabs>
+    <Tab text="Gen View">
+      <content>
+          <SplitPane dividerPositions="0.2" layoutX="1.0" layoutY="42.0" prefHeight="657.0" prefWidth="1023.0">
+              <items>
+                  <VBox prefHeight="655.0" prefWidth="154.0">
+                      <children>
+                          <ComboBox prefHeight="26.0" prefWidth="199.0" />
+                          <Label text="Alias" />
+                          <TextField />
+                          <Label text="Entity Name" />
+                          <TextField />
+                          <Label text="Desc" />
+                          <TextField />
+                          <Label text="Module Desc" />
+                          <TextField />
+                          <Label text="RequestMapping" />
+                          <TextField />
+                          <Label text="PageLocation" />
+                          <TextField />
+                          <Label text="Label" />
+                          <TextField />
+                      </children>
+                  </VBox>
+                  <ScrollPane prefHeight="655.0" prefWidth="860.0">
+                      <content>
+                          <TableView prefHeight="654.0" prefWidth="800.0">
+                              <columns>
+                                  <TableColumn prefWidth="123.0" text="FieldName" />
+                                  <TableColumn prefWidth="82.0" text="JdbcType" />
+                                  <TableColumn prefWidth="98.0" text="JdbcLength" />
+                                  <TableColumn prefWidth="97.0" text="JavaType" />
+                                  <TableColumn prefWidth="129.0" text="Comment" />
+                                  <TableColumn prefWidth="110.0" text="FieldLabel" />
+                                  <TableColumn prefWidth="150.0" text="IsBaseAtt" />
+                              </columns>
+                          </TableView>
+                      </content></ScrollPane>
+              </items>
+          </SplitPane>
+      </content>
+    </Tab>
+    <Tab text="Settings">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="1024.0" />
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>

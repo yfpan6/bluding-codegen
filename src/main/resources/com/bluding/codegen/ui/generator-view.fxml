@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bluding.codegen.ui.GeneratorViewController">
+   <children>
+      <ToolBar prefHeight="40.0" prefWidth="1024.0">
+        <items>
+          <Button mnemonicParsing="false" onAction="#toConfigurationView" text="Settings" />
+            <Button layoutY="-100.0" mnemonicParsing="false" onAction="#generate" text="Gen">
+               <rotationAxis>
+                  <Point3D x="40.0" y="40.0" z="40.0" />
+               </rotationAxis>
+            </Button>
+        </items>
+      </ToolBar>
+      <SplitPane dividerPositions="0.15" layoutX="1.0" layoutY="42.0" prefHeight="657.0" prefWidth="1023.0">
+         <items>
+            <VBox prefHeight="655.0" prefWidth="150.0">
+               <children>
+                   <Label text="DataSource" />
+                   <ComboBox fx:id="dataSourceSelect" onAction="#selectDataSource" prefWidth="150.0" />
+                   <Label text="Tables" />
+                  <ComboBox fx:id="tableNameSelect" onAction="#selectTableName" prefWidth="150.0" />
+                  <Label text="Alias" />
+                  <TextField fx:id="alias" prefWidth="150.0" />
+                  <Label text="Entity Name" />
+                  <TextField fx:id="entityName" prefWidth="150.0" />
+                  <Label text="Desc" />
+                  <TextField fx:id="entityDesc" prefWidth="150.0" />
+                  <Label text="Module Desc" />
+                  <TextField fx:id="moduleDesc" prefWidth="150.0" />
+                  <Label text="RequestMapping" />
+                  <TextField fx:id="requestMapping" prefWidth="150.0" />
+                  <Label text="PageLocation" />
+                  <TextField fx:id="pageLocation" prefWidth="150.0" />
+                  <Label text="Key Field" />
+                  <TextField fx:id="keyColumnName" prefWidth="150.0" />
+               </children>
+            </VBox>
+             <TableView fx:id="modelTableView" prefHeight="655.0" prefWidth="873.0">
+                 <columns>
+                     <TableColumn fx:id="columnName" prefWidth="165.0" text="ColumnName" />
+                     <TableColumn fx:id="jdbcType" prefWidth="100.0" text="JdbcType" />
+                     <TableColumn fx:id="jdbcLength" prefWidth="100.0" text="JdbcLength" />
+                     <TableColumn fx:id="fieldName" prefWidth="150.0" text="FieldName" />
+                     <TableColumn fx:id="javaType" prefWidth="150.0" text="JavaType" />
+                     <TableColumn fx:id="comment" prefWidth="250.0" text="Comment" />
+                     <TableColumn fx:id="fieldLabel" prefWidth="130.0" text="FieldLabel" />
+                     <TableColumn fx:id="isBaseAttr" prefWidth="90.0" text="IsBaseAttr" />
+                 </columns>
+             </TableView>
+         </items>
+      </SplitPane>
+   </children>
+</Pane>

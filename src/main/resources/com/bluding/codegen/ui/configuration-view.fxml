@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bluding.codegen.ui.ConfigurationViewController">
+   <children>
+      <ToolBar prefHeight="40.0" prefWidth="1024.0">
+        <items>
+            <Button mnemonicParsing="false" onAction="#toGeneratorView" text="&lt;&lt;&lt;" />
+            <Label text=" | "/>
+            <Button mnemonicParsing="false" onAction="#saveConfiguration" text="Save" />
+            <Label text=" | "/>
+            <Button mnemonicParsing="false" onAction="#createNewConfiguration" text="New" />
+            <Label text=" | "/>
+            <Button mnemonicParsing="false" onAction="#deleteConfiguration" text="Delete" />
+            <Label text=" | "/>
+            <Button mnemonicParsing="false" onAction="#resetCurrConfiguration" text="Reset" />
+        </items>
+      </ToolBar>
+       <SplitPane dividerPositions="0.2" layoutX="1.0" layoutY="42.0" prefHeight="657.0" prefWidth="1023.0">
+           <items>
+               <ListView fx:id="configGroupList" prefHeight="655.0" prefWidth="154.0" />
+               <Pane layoutY="40.0" prefHeight="655.0" prefWidth="860.0">
+                   <children>
+                       <Label layoutX="15.0" layoutY="63.0" text="JdbcUrl" />
+                       <Label layoutX="14.0" layoutY="137.0" text="Username" />
+                       <Label layoutX="14.0" layoutY="176.0" text="Password" />
+                       <Label layoutX="14.0" layoutY="98.0" text="DriverClass" />
+                       <Label layoutX="14.0" layoutY="260.0" prefHeight="16.0" prefWidth="74.0" text="SrcPath" />
+                       <Label layoutX="416.0" layoutY="260.0" text="BasePackage" />
+                       <Label layoutX="14.0" layoutY="352.0" text="BaseEntity" />
+                       <Label layoutX="14.0" layoutY="306.0" text="Author" />
+                       <Label layoutX="415.0" layoutY="306.0" text="Copyright" />
+                       <Label layoutX="14.0" layoutY="478.0" text="ServiceImplPackage" />
+                       <Label layoutX="416.0" layoutY="478.0" text="MapperPackage" />
+                       <Label layoutX="416.0" layoutY="352.0" text="BaseService" />
+                       <Label layoutX="14.0" layoutY="394.0" prefHeight="16.0" prefWidth="117.0" text="BaseServiceImpl" />
+                       <Label layoutX="414.0" layoutY="394.0" text="BaseMapper" />
+                       <Label layoutX="14.0" layoutY="436.0" text="EntityPackage" />
+                       <Label layoutX="416.0" layoutY="436.0" text="ServicePackage" />
+
+                       <TextField fx:id="configGroup" layoutX="14.0" layoutY="21.0" prefHeight="26.0" prefWidth="784.0" />
+                       <TextField fx:id="jdbcUrl" layoutX="95.0" layoutY="58.0" prefHeight="26.0" prefWidth="706.0" />
+                       <TextField fx:id="driverCLass" layoutX="95.0" layoutY="93.0" prefHeight="26.0" prefWidth="706.0" />
+                       <TextField fx:id="username" layoutX="95.0" layoutY="132.0" prefHeight="26.0" prefWidth="706.0" />
+                       <TextField fx:id="password" layoutX="95.0" layoutY="171.0" prefHeight="26.0" prefWidth="706.0" />
+
+                       <TextField fx:id="srcPath" layoutX="137.0" layoutY="255.0" prefHeight="26.0" prefWidth="250.0" />
+                       <TextField fx:id="basePackage" layoutX="530.0" layoutY="255.0" prefHeight="26.0" prefWidth="250.0" />
+                       <TextField fx:id="serviceImplPackage" layoutX="137.0" layoutY="473.0" prefHeight="26.0" prefWidth="250.0" />
+                       <TextField fx:id="mapperPackage" layoutX="530.0" layoutY="473.0" prefHeight="26.0" prefWidth="250.0" />
+                       <TextField fx:id="baseEntity" layoutX="137.0" layoutY="347.0" prefHeight="26.0" prefWidth="250.0" />
+                       <TextField fx:id="baseService" layoutX="529.0" layoutY="347.0" prefHeight="26.0" prefWidth="250.0" />
+                       <TextField fx:id="baseServiceImpl" layoutX="137.0" layoutY="389.0" prefHeight="26.0" prefWidth="250.0" />
+                       <TextField fx:id="author" layoutX="137.0" layoutY="301.0" prefHeight="26.0" prefWidth="250.0" />
+                       <TextField fx:id="copyright" layoutX="530.0" layoutY="301.0" prefHeight="26.0" prefWidth="250.0" />
+                       <TextField fx:id="baseMapper" layoutX="529.0" layoutY="389.0" prefHeight="26.0" prefWidth="250.0" />
+                       <TextField fx:id="entityPackage" layoutX="137.0" layoutY="431.0" prefHeight="26.0" prefWidth="250.0" />
+                       <TextField fx:id="servicePackage" layoutX="529.0" layoutY="431.0" prefHeight="26.0" prefWidth="250.0" />
+                   </children>
+               </Pane>
+           </items>
+       </SplitPane>
+   </children>
+</Pane>
