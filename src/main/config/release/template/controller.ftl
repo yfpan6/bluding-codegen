@@ -24,28 +24,28 @@ import com.longooc.sdk.common.bean.Result;
  * @date ${today}
  */
 @Controller
-@RequestMapping(value="/${modelConfiguration.functionUrl}", method={RequestMethod.GET, RequestMethod.POST})
+@RequestMapping(value="${modelConfiguration.requestMapping}", method={RequestMethod.GET, RequestMethod.POST})
 public class BrandController {
 
     @Resource
-    private ${modelConfiguration.entityClassENName}Service ${modelConfiguration.camelClassName}Service;
+    private ${modelConfiguration.entityName}Service ${modelConfiguration.camelClassName}Service;
 
     @RequestMapping
     public String index() throws Exception {
-        return "${modelConfiguration.mainPage}";
+        return "${modelConfiguration.pageLocation}";
     }
 
     @RequestMapping("/query")
     @ResponseBody
     public String query(@RequestParam Map<String, Object> paramMap) throws Exception {
         PagingQueryParam paging = PagingQueryParam.create(1,20).setCondition(paramMap);
-        Paging<${modelConfiguration.entityClassENName}> paging = ${modelConfiguration.camelClassName}Service.findAsPaging(paging);
+        Paging<${modelConfiguration.entityName}> paging = ${modelConfiguration.camelClassName}Service.findAsPaging(paging);
         return Result.success(paging);
     }
 
     @RequestMapping("/save")
     @ResponseBody
-    public String save(${modelConfiguration.entityClassENName} ${modelConfiguration.camelClassName})
+    public String save(${modelConfiguration.entityName} ${modelConfiguration.camelClassName})
             throws Exception {
         ${modelConfiguration.camelClassName}Service.save(${modelConfiguration.camelClassName});
         return Result.success(${modelConfiguration.camelClassName}.get${modelConfiguration.upperCamelKeyColName}());
@@ -65,7 +65,7 @@ public class BrandController {
 
     @RequestMapping("/update")
     @ResponseBody
-    public String update(${modelConfiguration.entityClassENName} ${modelConfiguration.camelClassName})
+    public String update(${modelConfiguration.entityName} ${modelConfiguration.camelClassName})
             throws Exception {
         ${modelConfiguration.camelClassName}Service.update(${modelConfiguration.camelClassName});
         return Result.success();

@@ -60,6 +60,13 @@ public class ConfigurationViewController extends AbstractController implements I
     private TextField serviceImplPackage;
     @FXML
     private TextField mapperPackage;
+    @FXML
+    private TextField controllerPackage;
+
+    @FXML
+    private TextArea  baseFileds;
+    @FXML
+    private TextField databasePrefix;
 
     @FXML
     protected void createNewConfiguration(ActionEvent event) {
@@ -190,6 +197,10 @@ public class ConfigurationViewController extends AbstractController implements I
         servicePackage.setText(configuration.getServicePackage());
         serviceImplPackage.setText(configuration.getServiceImplPackage());
         mapperPackage.setText(configuration.getMapperPackage());
+        controllerPackage.setText(configuration.getControllerPackage());
+
+        baseFileds.setText(configuration.getBaseFields());
+        databasePrefix.setText(configuration.getDatabasePrefix());
     }
 
     private void setValueToCurrConfiguration() {
@@ -213,6 +224,10 @@ public class ConfigurationViewController extends AbstractController implements I
             configuration.setServicePackage(servicePackage.getText());
             configuration.setServiceImplPackage(serviceImplPackage.getText());
             configuration.setMapperPackage(mapperPackage.getText());
+            configuration.setControllerPackage(controllerPackage.getText());
+            configuration.setBaseFields(baseFileds.getText());
+
+            configuration.setDatabasePrefix(databasePrefix.getText());
         }
     }
 }

@@ -18,12 +18,24 @@ public class TableRowVO {
     private StringProperty javaType;
     private StringProperty comment;
     private StringProperty fieldLabel;
-    private BooleanProperty isBaseAttr = new SimpleBooleanProperty(false);
+    private BooleanProperty isBaseAttr;
     private BooleanProperty required = new SimpleBooleanProperty(false);
 
-    private BooleanProperty showInEntity = new SimpleBooleanProperty(true);
-    private BooleanProperty showInList = new SimpleBooleanProperty(true);
-    private BooleanProperty showInAddForm = new SimpleBooleanProperty(true);
-    private BooleanProperty showInUpdateForm = new SimpleBooleanProperty(true);
+    private BooleanProperty showInEntity;
+    private BooleanProperty showInList;
+    private BooleanProperty showInAddForm;
+    private BooleanProperty showInUpdateForm;
+
+    public void initIsBaseAttr(SimpleBooleanProperty value) {
+        if ("auto_inc_id".equals(columnName)) {
+            isBaseAttr = new SimpleBooleanProperty(true);
+        } else {
+            isBaseAttr = value;
+        }
+        showInList = new SimpleBooleanProperty(!isBaseAttr.get());
+        showInEntity = new SimpleBooleanProperty(!isBaseAttr.get());
+        showInAddForm = new SimpleBooleanProperty(!isBaseAttr.get());
+        showInUpdateForm = new SimpleBooleanProperty(!isBaseAttr.get());
+    }
 
 }

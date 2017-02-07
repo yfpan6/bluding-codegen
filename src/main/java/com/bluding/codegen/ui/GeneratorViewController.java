@@ -14,9 +14,7 @@ import com.bluding.codegen.generator.ServiceGenerator;
 import com.bluding.codegen.ui.vo.TableRowVO;
 import com.bluding.codegen.util.StringUtil;
 import com.google.common.collect.Lists;
-import com.sun.tools.internal.jxc.gen.config.Config;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,17 +23,20 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.Callback;
 import org.apache.commons.lang3.StringUtils;
+import org.mybatis.generator.internal.util.JavaBeansUtil;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by myron.pan on 2017/01/28.
  */
 public class GeneratorViewController extends AbstractController {
 
+    @FXML
+    private TextField configFileLocation;
     @FXML
     private ComboBox<String> tableNameSelect;
     @FXML
@@ -58,6 +59,15 @@ public class GeneratorViewController extends AbstractController {
     private TableColumn<TableRowVO, String> fieldLabel;
     @FXML
     private TableColumn<TableRowVO, Boolean> isBaseAttr;
+    @FXML
+    private TableColumn<TableRowVO, Boolean> showInEntity;
+    @FXML
+    private TableColumn<TableRowVO, Boolean> showInList;
+    @FXML
+    private TableColumn<TableRowVO, Boolean> showInAddForm;
+    @FXML
+    private TableColumn<TableRowVO, Boolean> showInUpdateForm;
+
     @FXML
     private TextField alias;
     @FXML
@@ -100,6 +110,22 @@ public class GeneratorViewController extends AbstractController {
         isBaseAttr.setCellFactory(CheckBoxTableCell.forTableColumn(isBaseAttr));
         isBaseAttr.setEditable(true);
 
+        showInEntity.setCellValueFactory(row -> row.getValue().getShowInEntity());
+        showInEntity.setCellFactory(CheckBoxTableCell.forTableColumn(showInEntity));
+        showInEntity.setEditable(true);
+
+        showInList.setCellValueFactory(row -> row.getValue().getShowInList());
+        showInList.setCellFactory(CheckBoxTableCell.forTableColumn(showInList));
+        showInList.setEditable(true);
+
+        showInAddForm.setCellValueFactory(row -> row.getValue().getShowInAddForm());
+        showInAddForm.setCellFactory(CheckBoxTableCell.forTableColumn(showInAddForm));
+        showInAddForm.setEditable(true);
+
+        showInUpdateForm.setCellValueFactory(row -> row.getValue().getShowInUpdateForm());
+        showInUpdateForm.setCellFactory(CheckBoxTableCell.forTableColumn(showInUpdateForm));
+        showInUpdateForm.setEditable(true);
+
         modelTableView.setEditable(true);
 
         tableNameSelect.setItems(FXCollections.observableArrayList());
@@ -119,8 +145,6 @@ public class GeneratorViewController extends AbstractController {
         });
     }
 
-
-
     @FXML
     protected void generate(ActionEvent event) {
         Configuration configuration = dataSourceSelect.getSelectionModel().getSelectedItem();
@@ -135,6 +159,7 @@ public class GeneratorViewController extends AbstractController {
         }
         ModelConfiguration modelConfiguration = new ModelConfiguration(configuration);
         Context.setModelConfiguration(modelConfiguration);
+        modelConfiguration.setTableName(tableName);
         modelConfiguration.setAlias(alias.getText());
         modelConfiguration.setEntityName(entityName.getText());
         modelConfiguration.setEntityDesc(entityDesc.getText());
@@ -162,10 +187,10 @@ public class GeneratorViewController extends AbstractController {
             field.setShowInEntity(tableRowVO.getShowInEntity().get());
             field.setShowInList(tableRowVO.getShowInList().get());
             field.setShowInUpdateForm(tableRowVO.getShowInUpdateForm().get());
+            fieldList.add(field);
         });
 
         modelConfiguration.setFields(fieldList);
-
 
         new EntityGenerator(modelConfiguration).generateAndwriteToFile();
         new ServiceGenerator(modelConfiguration).generateAndwriteToFile();
@@ -192,6 +217,26 @@ public class GeneratorViewController extends AbstractController {
                 modelConfiguration.getEntityName() + "Controller",
                 controllerDir
         );
+
+        UITemplate.write(map, UITemplateFile.VIEW_MAIN,
+                "view_main.ftl",
+                configuration.getSrcPath() + "/" + modelConfiguration.getPageLocation()
+        );
+        UITemplate.write(map, UITemplateFile.VIEW_LIST,
+                "view_list.ftl",
+                configuration.getSrcPath() + "/" + modelConfiguration.getPageLocation()
+        );
+        UITemplate.write(map, UITemplateFile.VIEW_FORM_ADD,
+                "view_formAdd.ftl",
+                configuration.getSrcPath() + "/" + modelConfiguration.getPageLocation()
+        );
+        UITemplate.write(map, UITemplateFile.VIEW_FORM_UPDATE,
+                "view_formUpdate.ftl",
+                configuration.getSrcPath() + "/" + modelConfiguration.getPageLocation()
+        );
+        MessageBox.display(this.primaryStage, "Message",
+                "生成完毕，请到[" + configuration.getSrcPath() +"]目录下查看生成文件。",
+                null);
     }
 
     @FXML
@@ -212,6 +257,34 @@ public class GeneratorViewController extends AbstractController {
         ObservableList<TableRowVO> tableRows = FXCollections.observableArrayList();
         tableRows.addAll(tableRowVOList);
         modelTableView.setItems(tableRows);
+
+
+        if (tableName != null && !"".equals(tableName.trim()) &&
+                tableName.indexOf("选张表吧") < 0) {
+            String tempTableName = clearDatabasePrefix(configuration, tableName);
+            String classENName = JavaBeansUtil.getCamelCaseString(tempTableName, true);
+            entityName.setText(classENName);
+            alias.setText(StringUtil.getTableAlias(tempTableName));
+            requestMapping.setText("/" + parseRequestMapping(tempTableName));
+            pageLocation.setText(JavaBeansUtil.getCamelCaseString(tempTableName, false).toLowerCase());
+        }
+    }
+
+    private String parseRequestMapping(String tableName) {
+        return tableName.toLowerCase().replaceAll("_", "-") + "s";
+    }
+
+    private String clearDatabasePrefix(Configuration configuration, String tableName) {
+        String prefix = configuration.getDatabasePrefix();
+        if (StringUtils.isBlank(prefix)) {
+            return tableName;
+        }
+        String newTableName = tableName.toLowerCase();
+        prefix = prefix.toLowerCase() + "_";
+        if (newTableName.startsWith(prefix)) {
+            return newTableName.substring(prefix.length());
+        }
+        return tableName;
     }
 
     @FXML

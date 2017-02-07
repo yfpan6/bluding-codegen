@@ -34,7 +34,7 @@ public class MyronCommentGenerator {
      * when it was generated.
      */
     public static void addComment(XmlElement xmlElement) {
-        if (isSuppressedAllComments()) {
+        if (isSuppressedAllComments(null)) {
             return;
         }
 
@@ -99,7 +99,7 @@ public class MyronCommentGenerator {
      * @return a string representing the current timestamp, or null
      */
     protected static String getDateString() {
-        if (isSuppressedAllComments()) {
+        if (isSuppressedAllComments(null)) {
             return null;
         } else {
             return new Date().toString();
@@ -115,7 +115,7 @@ public class MyronCommentGenerator {
     public static void addClassComment(InnerClass innerClass,
                                        ModelConfiguration modelConfiguration,
                                        String[] commoneLines) {
-        if (isSuppressedAllComments()) {
+        if (isSuppressedAllComments(modelConfiguration.getConfiguration())) {
             return;
         }
 
@@ -136,7 +136,7 @@ public class MyronCommentGenerator {
 
         innerClass.addJavaDocLine(" *");
 
-        Configuration configuration = Context.getCurrConfigOrEmptyConfig();
+        Configuration configuration = modelConfiguration.getConfiguration();
         sb.append(" * @Author ").append(configuration.getAuthor());
         innerClass.addJavaDocLine(sb.toString());
         sb.setLength(0);
@@ -173,7 +173,7 @@ public class MyronCommentGenerator {
                                       ModelConfiguration modelConfiguration,
                                        String[] commoneLines) {
 
-        if (isSuppressedAllComments()) {
+        if (isSuppressedAllComments(modelConfiguration.getConfiguration())) {
             return;
         }
 
@@ -194,7 +194,7 @@ public class MyronCommentGenerator {
 
         innerClass.addJavaDocLine(" *");
 
-        Configuration configuration = Context.getCurrConfigOrEmptyConfig();
+        Configuration configuration = modelConfiguration.getConfiguration();
         sb.append(" * @Author ").append(configuration.getAuthor());
         innerClass.addJavaDocLine(sb.toString());
         sb.setLength(0);
@@ -223,7 +223,7 @@ public class MyronCommentGenerator {
     public static void addEnumComment(InnerEnum innerEnum,
                                       ModelConfiguration modelConfiguration) {
 
-        if (isSuppressedAllComments()) {
+        if (isSuppressedAllComments(modelConfiguration.getConfiguration())) {
             return;
         }
 
@@ -246,7 +246,7 @@ public class MyronCommentGenerator {
                                        FieldConfiguration fieldConfiguration,
                                        String[] commoneLines) {
 
-        if (isSuppressedAllComments()) {
+        if (isSuppressedAllComments(fieldConfiguration.getModelConfiguration().getConfiguration())) {
             return;
         }
 
@@ -286,7 +286,7 @@ public class MyronCommentGenerator {
     public static void addGeneralMethodComment(Method method,
                                                ModelConfiguration modelConfiguration) {
 
-        if (isSuppressedAllComments()) {
+        if (isSuppressedAllComments(modelConfiguration.getConfiguration())) {
             return;
         }
 
@@ -309,7 +309,7 @@ public class MyronCommentGenerator {
                                         FieldConfiguration fieldConfiguration,
                                         String[] commoneLines) {
 
-        if (isSuppressedAllComments()) {
+        if (isSuppressedAllComments(fieldConfiguration.getModelConfiguration().getConfiguration())) {
             return;
         }
 
@@ -353,7 +353,7 @@ public class MyronCommentGenerator {
                                         FieldConfiguration fieldConfiguration,
                                         String[] commoneLines) {
 
-        if (isSuppressedAllComments()) {
+        if (isSuppressedAllComments(fieldConfiguration.getModelConfiguration().getConfiguration())) {
             return;
         }
 
@@ -399,7 +399,7 @@ public class MyronCommentGenerator {
                                 ModelConfiguration modelConfiguration,
                                 boolean markAsDoNotDelete) {
 
-        if (isSuppressedAllComments()) {
+        if (isSuppressedAllComments(modelConfiguration.getConfiguration())) {
             return;
         }
 
@@ -418,8 +418,7 @@ public class MyronCommentGenerator {
         innerClass.addJavaDocLine(" */"); //$NON-NLS-1$
     }
 
-    private static boolean isSuppressedAllComments() {
-        Configuration configuration = Context.getCurrConfiguration();
+    private static boolean isSuppressedAllComments(Configuration configuration) {
         if (configuration == null) {
             return false;
         }

@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.Pane?>
@@ -14,13 +13,13 @@
       <ToolBar prefHeight="40.0" prefWidth="1024.0">
         <items>
             <Button mnemonicParsing="false" onAction="#toGeneratorView" text="&lt;&lt;&lt;" />
-            <Label text=" | " />
+            <Label text=" | "/>
             <Button mnemonicParsing="false" onAction="#saveConfiguration" text="Save" />
-            <Label text=" | " />
+            <Label text=" | "/>
             <Button mnemonicParsing="false" onAction="#createNewConfiguration" text="New" />
-            <Label text=" | " />
+            <Label text=" | "/>
             <Button mnemonicParsing="false" onAction="#deleteConfiguration" text="Delete" />
-            <Label text=" | " />
+            <Label text=" | "/>
             <Button mnemonicParsing="false" onAction="#resetCurrConfiguration" text="Reset" />
         </items>
       </ToolBar>
@@ -64,12 +63,6 @@
                        <TextField fx:id="baseMapper" layoutX="529.0" layoutY="389.0" prefHeight="26.0" prefWidth="250.0" />
                        <TextField fx:id="entityPackage" layoutX="137.0" layoutY="431.0" prefHeight="26.0" prefWidth="250.0" />
                        <TextField fx:id="servicePackage" layoutX="529.0" layoutY="431.0" prefHeight="26.0" prefWidth="250.0" />
-                       <Label layoutX="14.0" layoutY="516.0" text="ControllerPackage" />
-                       <TextField fx:id="controllerPackage" layoutX="137.0" layoutY="511.0" prefHeight="26.0" prefWidth="250.0" />
-                       <Label layoutX="18.0" layoutY="570.0" text="BaseFields" />
-                       <TextArea fx:id="baseFileds" layoutX="137.0" layoutY="554.0" prefHeight="47.0" prefWidth="641.0" />
-                       <Label layoutX="14.0" layoutY="218.0" text="DatabasePrefix" />
-                       <TextField fx:id="databasePrefix" layoutX="137.0" layoutY="213.0" prefHeight="26.0" prefWidth="250.0" />
                    </children>
                </Pane>
            </items>

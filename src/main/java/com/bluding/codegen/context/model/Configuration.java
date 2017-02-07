@@ -29,7 +29,6 @@ public class Configuration {
     private String serviceImplPackage;
     private String mapperPackage;
 
-
     private String serviceAnnotationsClassName;
 
     private String databaseName;
@@ -37,8 +36,13 @@ public class Configuration {
     // base entity 中 属性对应的 列名
     private String baseFields;
 
+    private String databasePrefix;
+
     private String fileEncoding = "UTF-8";
     private boolean trimStringsEnabled;
     private boolean suppressedAllComments;
 
+    public String toString() {
+        return configGroup;
+    }
 }

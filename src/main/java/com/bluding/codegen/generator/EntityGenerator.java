@@ -3,14 +3,13 @@
  */
 package com.bluding.codegen.generator;
 
-import com.bluding.codegen.context.Context;
 import com.bluding.codegen.context.model.Configuration;
 import com.bluding.codegen.context.model.FieldConfiguration;
 import com.bluding.codegen.context.model.ModelConfiguration;
+import com.bluding.codegen.generator.util.JavaBeanUtil;
+import com.bluding.codegen.generator.util.MyronCommentGenerator;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.dom.java.*;
-import com.bluding.codegen.generator.util.MyronCommentGenerator;
-import com.bluding.codegen.generator.util.JavaBeanUtil;
 
 import java.util.ArrayList;
 import java.util.List;

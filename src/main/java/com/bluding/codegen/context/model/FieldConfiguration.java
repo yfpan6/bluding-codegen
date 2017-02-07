@@ -5,6 +5,7 @@ package com.bluding.codegen.context.model;
 
 import com.bluding.codegen.generator.util.JdbcTypeTranslator;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.internal.types.JdbcTypeNameTranslator;
 
 /**
@@ -64,6 +65,14 @@ public class FieldConfiguration {
         return modelConfiguration;
     }
 
+    public String getLabelText() {
+        return StringUtils.isBlank(fieldLabel) ? columnName : fieldLabel;
+    }
+
+    public boolean isShowInEntity() {
+        return showInEntity;
+    }
+
     public String getColumnName() {
         if (columnName == null) {
             return null;
@@ -79,4 +88,20 @@ public class FieldConfiguration {
         int iJdbcType = JdbcTypeTranslator.getJdbcType(jdbcType);
         return JdbcTypeNameTranslator.getJdbcTypeName(iJdbcType);
     }
+
+//    public Boolean getShowInEntity() {
+//        return showInEntity;
+//    }
+//
+//    public Boolean getShowInList() {
+//        return showInList;
+//    }
+//
+//    public Boolean getShowInAddForm() {
+//        return showInAddForm;
+//    }
+//
+//    public Boolean getShowInUpdateForm() {
+//        return showInUpdateForm;
+//    }
 }

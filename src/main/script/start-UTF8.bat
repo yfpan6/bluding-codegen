@@ -1,7 +1,7 @@
 @echo off
 @echo STARTUP App
 @echo 设置环境变量,循环当前目录下的lib目录下所有jar文件,并设置CLASSPATH
-rem create by glenn pan
+rem create by myron pan
 
 cd ..
 
@@ -29,7 +29,7 @@ set CLASSPATH=%CLASSPATH%;%APP_HOME%\conf
 @echo CLASSPATH:
 @echo %CLASSPATH%
 @echo 运行应用程序
-java -classpath %CLASSPATH% pan.glenn.codegen.App
+java -classpath %CLASSPATH% com.bluding.codegen.App
 rem call java -classpath %CLASSPATH%
 cd bin
 pause

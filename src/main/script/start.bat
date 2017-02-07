@@ -1,7 +1,6 @@
 @echo off
 @echo STARTUP App
-@echo ���û�������,ѭ����ǰĿ¼�µ�libĿ¼������jar�ļ�,������CLASSPATH
-rem create by glenn pan
+rem create by myron pan
 
 cd ..
 
@@ -26,11 +25,9 @@ goto :eof
 
 cd bin
 
-@echo ��Ҫ���е�jar���õ�CLASSPATH��
 set CLASSPATH=%CLASSPATH%;%APP_HOME%\conf
 @echo CLASSPATH:
 @echo %CLASSPATH%
-@echo ����Ӧ�ó���
-start javaw -classpath %CLASSPATH% pan.glenn.codegen.App
+start javaw -classpath %CLASSPATH% com.bluding.codegen.App
 rem call java -classpath %CLASSPATH%
 exit

@@ -76,14 +76,13 @@ public class Context {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Reader reader = null;
         try {
-            File file = new File("/home/myron/java/codes/bluding/bluding-codegen/src/main/configs.json");
+            File file = new File(Context.class.getClassLoader().getResource("configs.json").getFile());
             if (!file.exists()) {
                 file.createNewFile();
             }
             reader = new FileReader(file);
             List<Configuration> configurationList = gsonBuilder.create().fromJson(reader,
                     new TypeToken<List<Configuration>>(){}.getType());
-            System.out.println(configurationList);
             if (configurationList == null) {
                 return;
             }
@@ -106,10 +105,7 @@ public class Context {
     public static void saveConfig() {
         Writer writer = null;
         try {
-            File file = new File("/home/myron/java/codes/bluding/bluding-codegen/src/main/configs.json");
-            if (!file.exists()) {
-                file.createNewFile();
-            }
+            File file = new File(Context.class.getClassLoader().getResource("configs.json").getFile());
             writer = new FileWriter(file);
             Gson gson = new Gson();
             gson.toJson(Context.getConfigs(), writer);

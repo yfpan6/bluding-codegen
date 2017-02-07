@@ -3,20 +3,24 @@
  */
 package ${controllerPkg};
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import cn.udesk.insight.core.entity.${modelConfiguration.entityName};
+import cn.udesk.insight.core.service.${modelConfiguration.entityName}Service;
+import cn.udesk.sdk.common.ParamChecker;
+import cn.udesk.sdk.common.bean.Paging;
+import cn.udesk.sdk.common.bean.Result;
+import cn.udesk.sdk.common.consts.CommonEnum;
+import cn.udesk.sdk.orm.QueryByPagingParam;
+import cn.udesk.sdk.util.bean.BeanUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.longooc.sdk.orm.PagingQueryParam;
-import com.longooc.sdk.common.bean.Paging;
-import com.longooc.sdk.common.bean.Result;
+import javax.annotation.Resource;
 
 /**
  *
@@ -24,8 +28,10 @@ import com.longooc.sdk.common.bean.Result;
  * @date ${today}
  */
 @Controller
-@RequestMapping(value="/${modelConfiguration.requestMapping}", method={RequestMethod.GET, RequestMethod.POST})
-public class BrandController {
+@RequestMapping(value="${modelConfiguration.requestMapping}", method={RequestMethod.GET, RequestMethod.POST})
+public class ${modelConfiguration.entityName}Controller {
+
+    private static final Logger logger = LoggerFactory.getLogger(${modelConfiguration.entityName}Controller.class);
 
     @Resource
     private ${modelConfiguration.entityName}Service ${modelConfiguration.camelClassName}Service;
@@ -37,7 +43,7 @@ public class BrandController {
 
     @RequestMapping("/query")
     @ResponseBody
-    public String query(@RequestParam Map<String, Object> paramMap) throws Exception {
+    public Result query(@RequestParam Map<String, Object> paramMap) throws Exception {
         PagingQueryParam paging = PagingQueryParam.create(1,20).setCondition(paramMap);
         Paging<${modelConfiguration.entityName}> paging = ${modelConfiguration.camelClassName}Service.findAsPaging(paging);
         return Result.success(paging);
@@ -45,7 +51,7 @@ public class BrandController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public String save(${modelConfiguration.entityName} ${modelConfiguration.camelClassName})
+    public Result save(${modelConfiguration.entityName} ${modelConfiguration.camelClassName})
             throws Exception {
         ${modelConfiguration.camelClassName}Service.save(${modelConfiguration.camelClassName});
         return Result.success(${modelConfiguration.camelClassName}.get${modelConfiguration.upperCamelKeyColName}());
@@ -53,10 +59,8 @@ public class BrandController {
 
     @RequestMapping("/delete")
     @ResponseBody
-    public String delete(Long id) throws Exception {
-        if (id == null) {
-            return Result.fail("id is null");
-        }
+    public Result delete(Long id) throws Exception {
+        ParamChecker.checkNotNull(id, CommonEnum.PARAM_IS_NULL);
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("${modelConfiguration.camelKeyColName}", id);
         ${modelConfiguration.camelClassName}Service.delete(param);
@@ -65,7 +69,7 @@ public class BrandController {
 
     @RequestMapping("/update")
     @ResponseBody
-    public String update(${modelConfiguration.entityName} ${modelConfiguration.camelClassName})
+    public Result update(${modelConfiguration.entityName} ${modelConfiguration.camelClassName})
             throws Exception {
         ${modelConfiguration.camelClassName}Service.update(${modelConfiguration.camelClassName});
         return Result.success();

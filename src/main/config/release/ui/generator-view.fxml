@@ -61,10 +61,6 @@
                      <TableColumn fx:id="comment" prefWidth="250.0" text="Comment" />
                      <TableColumn fx:id="fieldLabel" prefWidth="130.0" text="FieldLabel" />
                      <TableColumn fx:id="isBaseAttr" prefWidth="90.0" text="IsBaseAttr" />
-                     <TableColumn fx:id="showInEntity" prefWidth="90.0" text="InEntity" />
-                     <TableColumn fx:id="showInList" prefWidth="90.0" text="InList" />
-                     <TableColumn fx:id="showInAddForm" prefWidth="90.0" text="InAddForm" />
-                     <TableColumn fx:id="showInUpdateForm" prefWidth="90.0" text="InUpdateForm" />
                  </columns>
              </TableView>
          </items>

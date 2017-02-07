@@ -84,17 +84,7 @@ public class TableHandler {
 				if (rs.getString("NUMERIC_SCALE") != null) {
 					row.setJdbcLength(new SimpleStringProperty(rs.getString("NUMERIC_PRECISION")));
 				}
-				if (isBaseField(configuration, colName)) {
-					row.setShowInEntity(new SimpleBooleanProperty(false));
-					row.setShowInList(new SimpleBooleanProperty(false));
-					row.setShowInAddForm(new SimpleBooleanProperty(false));
-					row.setShowInUpdateForm(new SimpleBooleanProperty(false));
-				} else {
-					row.setShowInEntity(new SimpleBooleanProperty(true));
-					row.setShowInList(new SimpleBooleanProperty(true));
-					row.setShowInAddForm(new SimpleBooleanProperty(true));
-					row.setShowInUpdateForm(new SimpleBooleanProperty(true));
-				}
+				row.initIsBaseAttr(new SimpleBooleanProperty(isBaseField(configuration, colName)));
 				rowList.add(row);
 			}
 		} catch (SQLException e) {

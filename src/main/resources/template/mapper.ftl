@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${mapperPackage}.${modelConfiguration.entityClassENName}Mapper">
+<mapper namespace="${mapperPackage}.${modelConfiguration.entityName}Mapper">
 
-    <resultMap type="${entityPackage}.${modelConfiguration.entityClassENName}" id="baseResultMap">
+    <resultMap type="${entityPackage}.${modelConfiguration.entityName}" id="baseResultMap">
     <#list modelConfiguration.fields as field>
-        <result property="${field.fieldName}" column="${modelConfiguration.alias}_${field.columnName}" jdbcType="${field.jdbcType}"/>
+        <result property="${field.fieldName}" column="${modelConfiguration.alias}_${field.columnName}" jdbcType="${field.mybatisJdbcType}"/>
     </#list>
     </resultMap>
 
-    <sql id="columnList" >
+    <sql id="selectColumnsSqlSegment" >
     <#list modelConfiguration.fields as field>
         ${modelConfiguration.alias}.${field.columnName} AS ${modelConfiguration.alias}_${field.columnName}<#if field_has_next>,</#if>
     </#list>
@@ -25,13 +25,13 @@
                 </trim>
             </when>
             <otherwise>
-                <include refid="columnList"/>
+                <include refid="selectColumnsSqlSegment"/>
             </otherwise>
         </choose>
         FROM ${modelConfiguration.tableName} ${modelConfiguration.alias}
     </sql>
 
-    <sql id="orderSql">
+    <sql id="orderSqlSegment">
         <if test="orders != null">
             order by
             <trim prefix="" suffixOverrides=",">
@@ -42,7 +42,7 @@
         </if>
     </sql>
 
-    <sql id="conditionSqlForUD">
+    <sql id="dmlWhereSqlSegment">
         <if test="condition != null">
             <trim prefix="AND" prefixOverrides="AND">
             <#list modelConfiguration.fields as field>
@@ -54,7 +54,7 @@
         </if>
     </sql>
 
-    <sql id="conditionSqlForWhere">
+    <sql id="selectWhereSqlSegment">
         <if test="condition != null">
             <trim prefix="AND" prefixOverrides="AND">
                 <#list modelConfiguration.fields as field>
@@ -66,7 +66,7 @@
         </if>
     </sql>
 
-    <sql id="batchUpdateByIdsSql">
+    <sql id="batchUpdateByIdsSqlSegment">
         UPDATE ${modelConfiguration.tableName}
         <trim prefix="SET" suffixOverrides=",">
         <#list modelConfiguration.fields as field>
@@ -79,7 +79,7 @@
         </trim>
     </sql>
 
-    <sql id="updateSql">
+    <sql id="updateSqlSegment">
         UPDATE ${modelConfiguration.tableName}
         <trim prefix="SET" suffixOverrides=",">
         <#list modelConfiguration.fields as field>
@@ -92,7 +92,7 @@
         </trim>
     </sql>
 
-    <sql id="deleteSql">
+    <sql id="deleteSqlSegment">
         DELETE FROM ${modelConfiguration.tableName}
     </sql>
 
@@ -130,7 +130,7 @@
         </foreach>
     </sql>
 
-    <insert id="insert" parameterType="${modelConfiguration.entityClassENName}">
+    <insert id="insert" parameterType="${modelConfiguration.entityName}">
         INSERT INTO ${modelConfiguration.tableName}(
             <include refid="insertColumns"/>
         ) VALUES (
@@ -146,46 +146,46 @@
     </insert>
 
     <delete id="delete">
-        <include refid="deleteSql"/>
+        <include refid="deleteSqlSegment"/>
         <where>
-            <include refid="conditionSqlForUD"/>
+            <include refid="dmlWhereSqlSegment"/>
         </where>
     </delete>
 
     <delete id="deleteByIds" parameterType="BatchDeleteByIdsParam">
-        <include refid="deleteSql"/>
+        <include refid="deleteSqlSegment"/>
         <where>
             ${modelConfiguration.keyColumnName} IN
             <foreach collection="ids" open="(" close=")" item="item" separator=",">
                 ${"$"}{item}
             </foreach>
-            <include refid="conditionSqlForUD"/>
+            <include refid="dmlWhereSqlSegment"/>
         </where>
     </delete>
 
-    <update id="updateById" parameterType="${modelConfiguration.entityClassENName}">
-        <include refid="updateSql"/>
+    <update id="updateById" parameterType="${modelConfiguration.entityName}">
+        <include refid="updateSqlSegment"/>
         <where>
             ${modelConfiguration.keyColumnName}=${"#"}{${modelConfiguration.camelKeyColName}}
         </where>
     </update>
 
     <update id="updateByIds" parameterType="BatchUpdateByIdsParam">
-        <include refid="batchUpdateByIdsSql"/>
+        <include refid="batchUpdateByIdsSqlSegment"/>
         <where>
             ${modelConfiguration.keyColumnName} IN
             <foreach collection="ids" open="(" close=")" item="item" index="index" separator=",">
                 ${"#"}{item}
             </foreach>
-            <include refid="conditionSqlForUD"/>
+            <include refid="dmlWhereSqlSegment"/>
         </where>
     </update>
 
-    <select id="selectById" parameterType="IdQueryParam" resultMap="baseResultMap">
+    <select id="selectById" parameterType="QueryByIdParam" resultMap="baseResultMap">
         <include refid="selectSql"/>
         <where>
             ${modelConfiguration.alias}.${modelConfiguration.keyColumnName} = ${"#"}{${modelConfiguration.camelKeyColName}}
-            <include refid="conditionSqlForWhere"/>
+            <include refid="selectWhereSqlSegment"/>
         </where>
     </select>
 
@@ -193,7 +193,7 @@
         <include refid="selectSql"/>
         <if test="condition != null">
             <where>
-                <include refid="conditionSqlForWhere"/>
+                <include refid="selectWhereSqlSegment"/>
             </where>
         </if>
         LIMIT 1
@@ -203,25 +203,25 @@
         <include refid="selectSql"/>
         <if test="condition != null">
             <where>
-                <include refid="conditionSqlForWhere"/>
+                <include refid="selectWhereSqlSegment"/>
             </where>
         </if>
-        <include refid="orderSql"/>
+        <include refid="orderSqlSegment"/>
         <if test="start != null">
             LIMIT ${"#"}{start}, ${"#"}{limit}
         </if>
     </select>
 
-    <select id="selectAsListByIds" parameterType="IdsQueryParam" resultMap="baseResultMap">
+    <select id="selectAsListByIds" parameterType="QueryByIdsParam" resultMap="baseResultMap">
         <include refid="selectSql"/>
         <where>
             ${modelConfiguration.alias}.${modelConfiguration.keyColumnName} IN
             <foreach collection="ids" open="(" close=")" item="item" index="index" separator=",">
                 ${"#"}{item}
             </foreach>
-            <include refid="conditionSqlForWhere"/>
+            <include refid="selectWhereSqlSegment"/>
         </where>
-        <include refid="orderSql"/>
+        <include refid="orderSqlSegment"/>
     </select>
 
     <select id="count" parameterType="QueryParam" resultType="Integer">
@@ -230,7 +230,7 @@
         FROM
             ${modelConfiguration.tableName} ${modelConfiguration.alias}
         <where>
-            <include refid="conditionSqlForWhere"/>
+            <include refid="selectWhereSqlSegment"/>
         </where>
     </select>
 
@@ -240,7 +240,7 @@
         FROM
             ${modelConfiguration.tableName} ${modelConfiguration.alias}
         <where>
-            <include refid="conditionSqlForWhere"/>
+            <include refid="selectWhereSqlSegment"/>
         </where>
     </select>
 
