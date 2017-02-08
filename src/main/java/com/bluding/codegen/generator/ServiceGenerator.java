@@ -67,18 +67,7 @@ public class ServiceGenerator extends AbstractGenerator {
 
         String annotationCfg = configuration.getServiceAnnotationsClassName();
         if (annotationCfg != null && annotationCfg.trim().length() >= 0) {
-            String[] annotations = annotationCfg.split(",");
-            if (annotations.length > 0) {
-                FullyQualifiedJavaType annotationClassType = null;
-                for (String annotationClass : annotations) {
-                    if (annotationClass == null || annotationClass.trim().length() == 0) {
-                        continue;
-                    }
-                    annotationClassType = new FullyQualifiedJavaType(annotationClass);
-                    clazz.addImportedType(annotationClassType);
-                    clazz.addAnnotation("@" + annotationClassType.getShortName());
-                }
-            }
+            addAnnotation(clazz, annotationCfg.split(","));
         }
 
         MyronCommentGenerator.addClassComment(clazz, modelConfiguration);

@@ -6,11 +6,8 @@ package ${controllerPkg};
 import cn.udesk.insight.core.entity.${modelConfiguration.entityName};
 import cn.udesk.insight.core.service.${modelConfiguration.entityName}Service;
 import cn.udesk.sdk.common.ParamChecker;
-import cn.udesk.sdk.common.bean.Paging;
 import cn.udesk.sdk.common.bean.Result;
 import cn.udesk.sdk.common.consts.CommonEnum;
-import cn.udesk.sdk.orm.QueryByPagingParam;
-import cn.udesk.sdk.util.bean.BeanUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -21,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -36,20 +35,28 @@ public class ${modelConfiguration.entityName}Controller {
     @Resource
     private ${modelConfiguration.entityName}Service ${modelConfiguration.camelClassName}Service;
 
-    @RequestMapping
-    public String index() throws Exception {
-        return "${modelConfiguration.pageLocation}";
+    @RequestMapping(value = "/views/main", method = RequestMethod.GET)
+    public String showMainPage(ModelMap modelMap) {
+        return "${modelConfiguration.pageLocation}/main";
     }
 
-    @RequestMapping("/query")
-    @ResponseBody
-    public Result query(@RequestParam Map<String, Object> paramMap) throws Exception {
-        PagingQueryParam paging = PagingQueryParam.create(1,20).setCondition(paramMap);
-        Paging<${modelConfiguration.entityName}> paging = ${modelConfiguration.camelClassName}Service.findAsPaging(paging);
-        return Result.success(paging);
+    @RequestMapping(value = "/views/form", method = RequestMethod.GET)
+    public String showFormView(Integer id, ModelMap modelMap) {
+        if (id == null || id < 1) {
+            modelMap.put("record", new ${modelConfiguration.entityName}());
+            return "${modelConfiguration.pageLocation}/formAdd";
+        }
+        modelMap.put("record", ${modelConfiguration.camelClassName}Service.getById(id));
+        return "${modelConfiguration.pageLocation}/formUpdate";
     }
 
-    @RequestMapping("/save")
+    @RequestMapping(value = "/views/list",method = {RequestMethod.GET, RequestMethod.POST})
+    public String showListView(ModelMap modelMap) {
+        modelMap.put("recordList", ${modelConfiguration.camelClassName}Service.findAllAsList());
+        return "${modelConfiguration.pageLocation}/list";
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Result save(${modelConfiguration.entityName} ${modelConfiguration.camelClassName})
             throws Exception {
@@ -57,21 +64,21 @@ public class ${modelConfiguration.entityName}Controller {
         return Result.success(${modelConfiguration.camelClassName}.get${modelConfiguration.upperCamelKeyColName}());
     }
 
-    @RequestMapping("/delete")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Result delete(Long id) throws Exception {
-        ParamChecker.checkNotNull(id, CommonEnum.PARAM_IS_NULL);
-        Map<String, Object> param = new HashMap<String, Object>();
-        param.put("${modelConfiguration.camelKeyColName}", id);
-        ${modelConfiguration.camelClassName}Service.delete(param);
+    public Result deleteById(@PathVariable Integer id) throws Exception {
+        ParamChecker.check(id == null || id < 1, CommonEnum.PARAM_INVALID);
+        ${modelConfiguration.camelClassName}Service.deleteById(id);
         return Result.success();
     }
 
-    @RequestMapping("/update")
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public Result update(${modelConfiguration.entityName} ${modelConfiguration.camelClassName})
+    public Result updateById(@PathVariable Integer id, ${modelConfiguration.entityName} ${modelConfiguration.camelClassName})
             throws Exception {
-        ${modelConfiguration.camelClassName}Service.update(${modelConfiguration.camelClassName});
+        ParamChecker.checkNotNull(id == null || id < 1, CommonEnum.PARAM_INVALID);
+        ${modelConfiguration.camelClassName}.setId(id);
+        ${modelConfiguration.camelClassName}Service.updateById(${modelConfiguration.camelClassName});
         return Result.success();
     }
 

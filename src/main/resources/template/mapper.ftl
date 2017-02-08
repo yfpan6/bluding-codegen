@@ -43,11 +43,11 @@
     </sql>
 
     <sql id="dmlWhereSqlSegment">
-        <if test="condition != null">
+        <if test="filter != null">
             <trim prefix="AND" prefixOverrides="AND">
             <#list modelConfiguration.fields as field>
-                <if test="condition.${field.fieldName} != null">
-                    AND ${field.columnName} = ${"#"}{condition.${"$"}{field.fieldName}
+                <if test="filter.${field.fieldName} != null">
+                    AND ${field.columnName} = ${"#"}{filter.${field.fieldName}}
                 </if>
             </#list>
             </trim>
@@ -55,11 +55,11 @@
     </sql>
 
     <sql id="selectWhereSqlSegment">
-        <if test="condition != null">
+        <if test="filter != null">
             <trim prefix="AND" prefixOverrides="AND">
                 <#list modelConfiguration.fields as field>
-                <if test="condition.${field.fieldName} != null">
-                    AND ${modelConfiguration.alias}.${field.columnName} = ${"#"}{condition.${field.fieldName}}
+                <if test="filter.${field.fieldName} != null">
+                    AND ${modelConfiguration.alias}.${field.columnName} = ${"#"}{filter.${field.fieldName}}
                 </if>
                 </#list>
             </trim>
@@ -191,7 +191,7 @@
 
     <select id="selectSingle" parameterType="QueryParam" resultMap="baseResultMap">
         <include refid="selectSql"/>
-        <if test="condition != null">
+        <if test="filter != null">
             <where>
                 <include refid="selectWhereSqlSegment"/>
             </where>
@@ -201,7 +201,7 @@
 
     <select id="selectAsList" parameterType="QueryParam" resultMap="baseResultMap">
         <include refid="selectSql"/>
-        <if test="condition != null">
+        <if test="filter != null">
             <where>
                 <include refid="selectWhereSqlSegment"/>
             </where>

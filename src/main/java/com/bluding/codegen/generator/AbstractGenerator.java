@@ -4,7 +4,11 @@
 package com.bluding.codegen.generator;
 
 import com.bluding.codegen.context.model.ModelConfiguration;
+import com.bluding.codegen.util.StringUtil;
 import org.mybatis.generator.api.GeneratedJavaFile;
+import org.mybatis.generator.api.dom.java.CompilationUnit;
+import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
+import org.mybatis.generator.api.dom.java.JavaElement;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
 import java.io.*;
@@ -70,4 +74,45 @@ public abstract class AbstractGenerator {
         }
     }
 
+    public void addAnnotation(Object clazz, String[] annotationClassFullyQualifiedNameList) {
+        if (annotationClassFullyQualifiedNameList == null || annotationClassFullyQualifiedNameList.length == 0) {
+            return;
+        }
+        FullyQualifiedJavaType annotationClassType;
+        for (String annotationClassFullyQualifiedName : annotationClassFullyQualifiedNameList) {
+            annotationClassType = new FullyQualifiedJavaType(annotationClassFullyQualifiedName);
+            addAnnotation(clazz, annotationClassType);
+        }
+    }
+
+    public void addAnnotation(Object clazz, List<FullyQualifiedJavaType> annotationClassTypeList) {
+        if (annotationClassTypeList == null || annotationClassTypeList.isEmpty()) {
+            return;
+        }
+        annotationClassTypeList.forEach(annotationClassType -> {
+            addAnnotation(clazz, annotationClassType);
+        });
+    }
+
+    public void addAnnotation(Object clazz, String annotationClassFullyQualifiedName) {
+        if (StringUtil.isBLank(annotationClassFullyQualifiedName)) {
+            return;
+        }
+        FullyQualifiedJavaType annotationClassType = new FullyQualifiedJavaType(annotationClassFullyQualifiedName);
+        addAnnotation(clazz, annotationClassType);
+    }
+
+    public void addAnnotation(Object clazz, FullyQualifiedJavaType annotationClassType) {
+        if (annotationClassType == null) {
+            return;
+        }
+        if (!(clazz instanceof JavaElement)) {
+            return;
+        }
+        if (!(clazz instanceof CompilationUnit)) {
+            return;
+        }
+        ((CompilationUnit)clazz).addImportedType(annotationClassType);
+        ((JavaElement)clazz).addAnnotation("@" + annotationClassType.getShortName());
+    }
 }

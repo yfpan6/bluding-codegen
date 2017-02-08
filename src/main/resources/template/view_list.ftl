@@ -10,7 +10,7 @@
     <hr/>
   </caption>
   <thead>
-  <tr><#list modelConfiguration.fields as field><#if field.columnName!="auto_inc_id" && field.isShowInList>
+  <tr><#list modelConfiguration.fields as field><#if field.columnName!="auto_inc_id" && field.showInList>
     <th>${field.labelText}</th>
   </#if></#list><th width="200">操作</th>
   </tr>
@@ -18,8 +18,8 @@
   <tbody>
   <tr th:each="record, iterStat:${"$"}{recordList}">
     <#list modelConfiguration.fields as field>
-      <#if field.columnName!="auto_inc_id" && field.isShowInList>
-     <td th:text="${"$"}{record.${field.labelText}"></td>
+      <#if field.columnName!="auto_inc_id" && field.showInList>
+     <td th:text="${"$"}{record.${field.fieldName}}"></td>
       </#if>
     </#list>
     <td>

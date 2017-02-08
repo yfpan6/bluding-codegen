@@ -24,7 +24,7 @@
           ×
         </button>
         <h4 class="modal-title" id="myModalLabel">
-          Porter Settings:
+          ${modelConfiguration.entityDesc}Form:
         </h4>
       </div>
       <div class="modal-body" id="form_body">
@@ -53,7 +53,7 @@
       if (${"$"}(target).attr('record-id')) {
         id = ${"$"}(target).attr('record-id');
       }
-      ${"$"}('${"#"}form_body').load('${modelConfiguration.requestMapping}/views/form?recordId=' + id);
+      ${"$"}('${"#"}form_body').load('${modelConfiguration.requestMapping}/views/form?id=' + id);
     });
   });
 
@@ -72,11 +72,13 @@
     });
     var id = $('${"#"}record_id').val();
     var url = '${modelConfiguration.requestMapping}', type = 'POST';
+    /*<![CDATA[*/
     if (id && id != '0') {
       url = url + '/' + id;
       type = 'PUT';
       dataModel['id'] = id;
     }
+    /*]]>*/
     ${"$"}.ajax({
       url: url,
       type: type,
@@ -95,7 +97,7 @@
 
   function deleteDataModel(id) {
     ${"$"}.ajax({
-      url: '/demos/' + id,
+      url: '${modelConfiguration.requestMapping}/' + id,
       type: 'delete',
       dataType: 'json',
       success: function(resp) {

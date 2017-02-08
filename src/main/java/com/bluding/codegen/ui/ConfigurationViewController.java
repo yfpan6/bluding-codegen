@@ -69,6 +69,9 @@ public class ConfigurationViewController extends AbstractController implements I
     private TextField databasePrefix;
 
     @FXML
+    private TextField serviceAnnotationsClassName;
+
+    @FXML
     protected void createNewConfiguration(ActionEvent event) {
         Configuration configuration = new Configuration();
         configuration.setConfigGroup("New Configuration");
@@ -201,6 +204,7 @@ public class ConfigurationViewController extends AbstractController implements I
 
         baseFileds.setText(configuration.getBaseFields());
         databasePrefix.setText(configuration.getDatabasePrefix());
+        serviceAnnotationsClassName.setText(configuration.getServiceAnnotationsClassName());
     }
 
     private void setValueToCurrConfiguration() {
@@ -228,6 +232,7 @@ public class ConfigurationViewController extends AbstractController implements I
             configuration.setBaseFields(baseFileds.getText());
 
             configuration.setDatabasePrefix(databasePrefix.getText());
+            configuration.setServiceAnnotationsClassName(serviceAnnotationsClassName.getText());
         }
     }
 }

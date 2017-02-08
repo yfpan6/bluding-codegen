@@ -219,19 +219,19 @@ public class GeneratorViewController extends AbstractController {
         );
 
         UITemplate.write(map, UITemplateFile.VIEW_MAIN,
-                "view_main.ftl",
+                "main",
                 configuration.getSrcPath() + "/" + modelConfiguration.getPageLocation()
         );
         UITemplate.write(map, UITemplateFile.VIEW_LIST,
-                "view_list.ftl",
+                "list",
                 configuration.getSrcPath() + "/" + modelConfiguration.getPageLocation()
         );
         UITemplate.write(map, UITemplateFile.VIEW_FORM_ADD,
-                "view_formAdd.ftl",
+                "formAdd",
                 configuration.getSrcPath() + "/" + modelConfiguration.getPageLocation()
         );
         UITemplate.write(map, UITemplateFile.VIEW_FORM_UPDATE,
-                "view_formUpdate.ftl",
+                "formUpdate",
                 configuration.getSrcPath() + "/" + modelConfiguration.getPageLocation()
         );
         MessageBox.display(this.primaryStage, "Message",

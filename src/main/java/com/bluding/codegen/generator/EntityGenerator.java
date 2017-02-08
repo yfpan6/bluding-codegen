@@ -32,6 +32,7 @@ public class EntityGenerator extends AbstractGenerator {
         clazz.setVisibility(JavaVisibility.PUBLIC);
         clazz.setSuperClass(configuration.getBaseEntity());
         clazz.addImportedType(configuration.getBaseEntity());
+        addAnnotation(clazz, "lombok.Data");
 
         MyronCommentGenerator.addClassComment(clazz, modelConfiguration);
 
@@ -41,6 +42,7 @@ public class EntityGenerator extends AbstractGenerator {
             if (!field.isShowInEntity()) {
                 continue;
             }
+
             colNameField = new Field();
             colNameField.setType(FullyQualifiedJavaType.getStringInstance());
             colNameField.setVisibility(JavaVisibility.PUBLIC);
@@ -52,25 +54,25 @@ public class EntityGenerator extends AbstractGenerator {
         }
 
 
-        Field field = null;
-        Method getter = null;
-        Method setter = null;
-        for (FieldConfiguration domainField : fields) {
-            if (!domainField.isShowInEntity()) {
-                continue;
-            }
-            field = JavaBeanUtil.getJavaBeansField(domainField);
-            if (field.getType().equals(FullyQualifiedJavaType.getDateInstance())) {
-                clazz.addImportedType(field.getType());
-            }
-            getter = JavaBeanUtil.getJavaBeansGetter(domainField);
-            setter = JavaBeanUtil.getJavaBeansSetter(configuration, domainField);
-
-            clazz.addField(field);
-            MyronCommentGenerator.addFieldComment(field, domainField);
-            clazz.addMethod(getter);
-            clazz.addMethod(setter);
-        }
+//        Field field = null;
+//        Method getter = null;
+//        Method setter = null;
+//        for (FieldConfiguration domainField : fields) {
+//            if (!domainField.isShowInEntity()) {
+//                continue;
+//            }
+//            field = JavaBeanUtil.getJavaBeansField(domainField);
+//            if (field.getType().equals(FullyQualifiedJavaType.getDateInstance())) {
+//                clazz.addImportedType(field.getType());
+//            }
+//            getter = JavaBeanUtil.getJavaBeansGetter(domainField);
+//            setter = JavaBeanUtil.getJavaBeansSetter(configuration, domainField);
+//
+//            clazz.addField(field);
+//            MyronCommentGenerator.addFieldComment(field, domainField);
+//            clazz.addMethod(getter);
+//            clazz.addMethod(setter);
+//        }
 
         List<GeneratedJavaFile> list = new ArrayList<GeneratedJavaFile>();
         list.add(JavaBeanUtil.getGeneratedJavaFile(configuration, clazz));
